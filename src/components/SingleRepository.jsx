@@ -47,7 +47,7 @@ const RepositoryInfo = ({ repository }) => {
         data={reviewNodes}
         renderItem={({ item }) => <ReviewItem review={item} />}
         ItemSeparatorComponent={ItemSeparator}
-        keyExtractor={({ id }) => id} //???
+        keyExtractor={({ id }) => id}
         ListHeaderComponent={() => (
         <View>
             <RepositoryInfo repository={repository} />

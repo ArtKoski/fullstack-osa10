@@ -30,13 +30,12 @@ const UserReviews = ( {  } ) => {
         return<Text>loading</Text>
     }
 
-    console.log('b4: ', data.authorizedUser)
     const reviews = data.authorizedUser?.reviews
     const reviewNodes = reviews
     ? reviews.edges.map(edge => edge.node)
     : [];
 
-    console.log('nodes : ',reviewNodes)
+    //console.log('nodes : ',reviewNodes)
 
     return (
       <FlatList
