@@ -45,7 +45,7 @@ export class RepositoryListContainer extends React.Component {
         </View>
     );
   };
-
+  
   render() {
     const repositories = this.props.repositories;
     const repositoryNodes = repositories
@@ -58,19 +58,12 @@ export class RepositoryListContainer extends React.Component {
         testID='repositoryItem'
         data={repositoryNodes}
         keyExtractor={({ id }) => id}
-        renderItem={renderItem}
+        renderItem={this.props.renderItem}
         ItemSeparatorComponent={ItemSeparator}
       />
     );
   }
 }
-
-
-const renderItem = ({ item }) => {
-  return <Pressable onPress={() => history.push(`/${item.id}`)}>
-      <RepositoryItem item={item} />
-    </Pressable>;
-  };
 
 const RepositoryList = () => {
 
@@ -82,9 +75,11 @@ const RepositoryList = () => {
     const { repositories, loading } = useRepositories(orderBy, keyword);
     let history = useHistory();
 
-  if(loading) {
-    return(<div>loading...</div>)
-  }
+    const renderItem = ({ item }) => {
+      return <Pressable onPress={() => history.push(`/${item.id}`)}>
+          <RepositoryItem item={item} />
+        </Pressable>;
+      };    
 
     const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
@@ -97,6 +92,7 @@ const RepositoryList = () => {
       orderBy={orderBy}
       setOrderBy={setOrderBy}
       setKeywordText={setKeyword}
+      renderItem={renderItem}
     />
       
   );
