@@ -16,23 +16,47 @@ query repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirec
             id
             url
             }
+          cursor
           }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+        }
       }
   }
 `;
 
 export const GET_USER = gql`
-query {
+query authorizedUser($includeReviews: Boolean = false) {
     authorizedUser {
       id
       username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt     
+            user {
+              id
+              username
+            }
+            repository {
+              fullName
+            }
+          }
+      }
     }
   }
+}
 `;
 
 export const GET_REPOSITORY = gql`
 query repository($id: ID!){
     repository(id: $id) {
+        fullName
         description
         ratingAverage
         reviewCount
@@ -54,6 +78,12 @@ query repository($id: ID!){
                   username
                 }
               }
+              cursor
+            }
+            pageInfo {
+              endCursor
+              startCursor
+              hasNextPage
             }
         }     
     }

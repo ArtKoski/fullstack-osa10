@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
       }
 });
 
-const SingleReview = ( {review} ) => {
+const SingleReview = ( {review, ownReviews} ) => {
 
     const createdAt = review.createdAt.substring(0,10)
     return(
@@ -46,7 +46,12 @@ const SingleReview = ( {review} ) => {
             </View>
             <View style={styles.flexContainerVertical}>
                 <View>
+                    {!ownReviews &&
                     <Text fontWeight="bold">{review.user.username}</Text>
+                    }
+                    {ownReviews &&
+                    <Text fontWeight="bold">{review.repository.fullName}</Text>
+                    }
                 </View>
                 <View>
                     <Text>{createdAt}</Text>

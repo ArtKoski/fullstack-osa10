@@ -30,14 +30,30 @@ const useRepositories = (orderBy, keyword) => {
             orderDirection: 'ASC'
         }
     }
+
+    const handleFetchMore = () => {
+        const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
     
+        if (!canFetchMore) {
+          return;
+        }
+    
+        fetchMore({
+          variables: {
+            after: data.repositories.pageInfo.endCursor,
+            ...variables,
+          },
+        });
+      };
+
     const { data, error, loading } = useQuery(GET_REPOSITORIES, {
         fetchPolicy: 'cache-and-network',
         variables: search
       });
 
   return { repositories: data ? data.repositories : undefined,
-     loading };
+        fetchMore: handleFetchMore,
+        loading };
 };
 
 export default useRepositories;

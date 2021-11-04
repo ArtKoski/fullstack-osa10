@@ -9,12 +9,10 @@ import ReviewForm from './ReviewForm';
 const validationSchema = yup.object().shape({
     owner: yup
       .string()
-      .min(3, 'username length must be greater or equal to 3')
-      .required('username is required'),
+      .required('owner is required'),
     repositoryName: yup
       .string()
-      .min(3, 'password length must be greater or equal to 3')
-      .required('password is required'),
+      .required('repository name is required'),
     rating: yup
       .number()
       .required('(Numeric) Rating is required')

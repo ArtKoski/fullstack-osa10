@@ -10,7 +10,7 @@ mutation($username: String!, $password: String!) {
 
 
 export const CREATE_REVIEW = gql`
-mutation($owner: String!, $name: String!, $rating: Int!, $review: String) {
+mutation($name: String!, $owner: String!, $rating: Int!, $review: String) {
     createReview(review: { ownerName: $owner, repositoryName: $name, rating: $rating, text: $review}) {
         id
     }

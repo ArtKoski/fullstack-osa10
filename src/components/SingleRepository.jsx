@@ -25,9 +25,15 @@ const RepositoryInfo = ({ repository }) => {
 
   const SingleRepository = () => {
     const { id } = useParams();
-    const { repository, loading } = useRepository(id);
+    const { repository, loading, fetchMore } = useRepository(id, 
+      { first: 4 });
 
-    if(loading) {
+    const onEndReach = () => {
+      console.log('loading more')
+      fetchMore();
+    }
+
+    if(loading || !repository) {
         return<Text>loading</Text>
     }
 
@@ -41,13 +47,14 @@ const RepositoryInfo = ({ repository }) => {
         data={reviewNodes}
         renderItem={({ item }) => <ReviewItem review={item} />}
         ItemSeparatorComponent={ItemSeparator}
-        keyExtractor={({ id }) => id}
+        keyExtractor={({ id }) => id} //???
         ListHeaderComponent={() => (
         <View>
             <RepositoryInfo repository={repository} />
             <Text fontWeight='bold' style={{padding: 4, marginLeft:5}}>reviews</Text> 
         </View> )}
-        // ...
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   };

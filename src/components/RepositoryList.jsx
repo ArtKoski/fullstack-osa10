@@ -20,7 +20,6 @@ const KeywordText = ({ setKeywordText }) => {
     <TextInput
       onChangeText={(text) => setKeywordText(text)}
       placeholder='Search repositories'
-      style={{ padding: '5px' }}
     />
   );
 };
@@ -29,8 +28,7 @@ export class RepositoryListContainer extends React.Component {
   renderHeader = () => {
     const props = this.props;
     return (
-      <View 
-      style={{ padding: '5px '}}>
+      <View>
         <KeywordText setKeywordText={props.setKeywordText} />
         <Picker
         selectedValue={props.orderBy}
@@ -60,6 +58,8 @@ export class RepositoryListContainer extends React.Component {
         keyExtractor={({ id }) => id}
         renderItem={this.props.renderItem}
         ItemSeparatorComponent={ItemSeparator}
+        onEndReached={this.props.onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
@@ -72,7 +72,10 @@ const RepositoryList = () => {
     const [keywordValue] = useDebounce(keyword, 500);
 
     
-    const { repositories, loading } = useRepositories(orderBy, keyword);
+    const { repositories, loading, fetchMore } = useRepositories(
+      orderBy, 
+      keyword,
+      { first: 8 });
     let history = useHistory();
 
     const renderItem = ({ item }) => {
@@ -80,6 +83,10 @@ const RepositoryList = () => {
           <RepositoryItem item={item} />
         </Pressable>;
       };    
+      
+    const onEndReach = () => {
+      fetchMore();
+    }
 
     const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
@@ -93,6 +100,7 @@ const RepositoryList = () => {
       setOrderBy={setOrderBy}
       setKeywordText={setKeyword}
       renderItem={renderItem}
+      onEndReach={onEndReach}
     />
       
   );
